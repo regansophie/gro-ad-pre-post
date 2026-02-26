@@ -1248,7 +1248,7 @@ var prolific_completion_page = {
       <p>Thank you for participating!</p>
       <p style="margin-top: 20px;">Your Prolific completion code is:</p>
       <p style="margin-top: 10px; font-size: 32px; font-weight: bold;">
-        <code>C4LMH6MP</code>
+        <code>C12K86L9</code>
       </p>
       <p style="margin-top: 30px;">
         You can now return to Prolific and enter this code.<br>
