@@ -1143,7 +1143,7 @@ var opening_instructions = {
       padding-top: 10%;
       text-align: center;
     ">
-      <p>
+      //<p>
         This study will probably take you less than ten minutes.
         Please do not rush. Your answers are very important research data.
       </p>
@@ -1180,10 +1180,6 @@ var opening_instructions_prolific = {
       padding-top: 10%;
       text-align: center;
     ">
-      <p>
-        This study will probably take you less than ten minutes.
-        Please do not rush. Your answers are very important research data.
-      </p>
       <p style="margin-top: 20px;">
         After this page, you will see a consent form. Once you give consent, the experiment will begin.
       </p>
