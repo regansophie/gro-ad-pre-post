@@ -231,7 +231,7 @@ function startGumballAnimation(globeSelector = '#gumball-globe') {
   const CENTER_Y = 50;
   const CIRCLE_RADIUS = 50 - EDGE_MARGIN - BALL_RADIUS;
 
-  const SPEED = 0.28;
+  const SPEED = 0.23;
 
   const state = balls.map(el => {
     const x = parseFloat(el.style.left) || 50;
