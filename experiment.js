@@ -231,7 +231,7 @@ function startGumballAnimation(globeSelector = '#gumball-globe') {
   const CENTER_Y = 50;
   const CIRCLE_RADIUS = 50 - EDGE_MARGIN - BALL_RADIUS;
 
-  const SPEED = 0.18;
+  const SPEED = 0.28;
 
   const state = balls.map(el => {
     const x = parseFloat(el.style.left) || 50;
@@ -294,9 +294,10 @@ var gumball_configs_intro = [
   { numRed: 0,  numBlue: 0,  specialAlien: 0, headerText: "These are the aliens who live there.", audio: null },
   { numRed: 0,  numBlue: 0,  specialAlien: 0, headerText: "These aliens love gumballs.", audio: null },
   { numRed: 15, numBlue: 15, specialAlien: 0, headerText: "Every day, new gumballs are delivered to their gumball machine.", audio: null },
-  { numRed: 15, numBlue: 15, specialAlien: 0, headerText: "And the aliens get to take one out and add it to their collection.", audio: null },
+  { numRed: 15, numBlue: 15, specialAlien: 0, headerText: "And one gumball comes out.", audio: null },
+  { numRed: 15, numBlue: 15, specialAlien: 0, headerText: "The aliens get to add the one that comes out to their collection.", audio: null },
   { numRed: 15, numBlue: 15, specialAlien: 1, headerText: "One of the aliens goes up to check what is in the machine.", audio: null },
-  { numRed: 15, numBlue: 15, specialAlien: 1, headerText: "He says whether he thinks the aliens will get a blue gumball that day.", audio: null }
+  { numRed: 15, numBlue: 15, specialAlien: 1, headerText: "He says how likely he thinks it is that the aliens will get a blue gumball.", audio: null }
 ];
 
 var gumball_configs_intro_2 = [
@@ -721,7 +722,7 @@ function makeGumballPages(configList) {
 function getPredictionCopy(gender) {
   if (gender === "self") {
     return {
-      question: "What would you personally say about the blue gumballs?",
+      question: "What would you say about the likelihood of getting a blue gumball?",
       likelihoodPrompt: "How likely is it that you would say each of the following sentences?",
       mightLabel: `You would say, <b>“We might get a blue one.”</b>`,
       probablyLabel: `You would say, <b>“We will probably get a blue one.”</b>`,
@@ -730,7 +731,7 @@ function getPredictionCopy(gender) {
   }
 
   return {
-    question: "What do you think this alien will say about the blue gumballs?",
+    question: "What do you think this alien will say about the ikelihood of getting a blue gumballs?",
     likelihoodPrompt: "How likely do you think it is that the alien will say each of the following sentences?",
     mightLabel: `The alien will say, <b>“We might get a blue one.”</b>`,
     probablyLabel: `The alien will say, <b>“We will probably get a blue one.”</b>`,
@@ -1117,7 +1118,7 @@ var credit_instructions = {
       <p>Thank you for participating!</p>
       <p>To receive credit, please click the link below and enter your name.</p>
       <p style="margin-top:20px;">
-        <a href="https://forms.gle/MPAsLVCW4rvpQYK89"
+        <a href="https://forms.gle/3Vk7e4CqKtZkYok49"
            target="_blank"
            style="color:#ffd166; font-size:26px; text-decoration:underline;">
            → Click here to submit your name for RPP credit ←
@@ -1303,6 +1304,13 @@ var self_response_configs = [{
   specialAlien: 0,
   headerText: "Now, we want to know what you would say in each situation.",
   audio: null
+},
+{
+  numRed: 0,
+  numBlue: 0,
+  specialAlien: 0,
+  headerText: "Think about how you would personally describe the likelihood.",
+  audio: null
 }];
 
 const IMAGE_PRELOAD = [
@@ -1377,12 +1385,12 @@ console.log(speaker_con);
 timeline.push(preload_images);
 
 // Uncomment for RPP
- timeline.push(opening_instructions);
+// timeline.push(opening_instructions);
 
 
 // Uncomment for Prolific
-// timeline.push(prolific_id_page);
-// timeline.push(opening_instructions_prolific);
+ timeline.push(prolific_id_page);
+ timeline.push(opening_instructions_prolific);
 
 
 timeline.push(consent_block);
@@ -1428,10 +1436,10 @@ timeline.push(saving_screen);
 timeline.push(save_data);
 
 // Uncomment for Prolific
-//timeline.push(prolific_completion_page);
+timeline.push(prolific_completion_page);
 
 // Uncomment for RPP
-timeline.push(credit_instructions);
+// timeline.push(credit_instructions);
 
 
 // ==================================================
