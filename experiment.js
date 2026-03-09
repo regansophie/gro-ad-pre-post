@@ -757,9 +757,10 @@ function getPredictionCopy(gender) {
       otherLabel: `You would say <b>something else.</b>`
     };
   }
-
+  const pronoun = gender === "female" ? "she" : "he";
+  
   return {
-    question: "What will this alien will say about the ikelihood of getting a blue gumball?",
+    question: "What will ${pronoun} say about the likelihood of getting a blue gumball?",
     likelihoodPrompt: "How likely do you think it is that the alien will say each of the following sentences?",
     mightLabel: `The alien will say, <b>“We might get a blue one.”</b>`,
     probablyLabel: `The alien will say, <b>“We will probably get a blue one.”</b>`,
