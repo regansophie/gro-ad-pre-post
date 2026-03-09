@@ -1164,7 +1164,7 @@ var credit_instructions = {
       <p>Thank you for participating!</p>
       <p>To receive credit, please click the link below and enter your name.</p>
       <p style="margin-top:20px;">
-        <a href="https://forms.gle/3Vk7e4CqKtZkYok49"
+        <a href="https://forms.gle/Rg4TXhBrQSdzXBzg8"
            target="_blank"
            style="color:#ffd166; font-size:26px; text-decoration:underline;">
            → Click here to submit your name for RPP credit ←
@@ -1372,7 +1372,7 @@ const preload_images = {
 // ==================================================
 // Assign to one condition
 // ==================================================
-var condition = jsPsych.randomization.sampleWithoutReplacement([3], 1)[0];
+var condition = jsPsych.randomization.sampleWithoutReplacement([1, 2, 3], 1)[0];
 jsPsych.data.addProperties({ prediction_condition: condition });
 
 var speaker_con = jsPsych.randomization.sampleWithoutReplacement([0,1], 1)[0];
@@ -1427,7 +1427,7 @@ console.log(speaker_con);
 timeline.push(preload_images);
 
 // Uncomment for RPP
- timeline.push(opening_instructions);
+timeline.push(opening_instructions);
 
 
 // Uncomment for Prolific
@@ -1440,8 +1440,6 @@ timeline.push(consent_block);
 timeline.push(makeGumballPages(gumball_configs_intro));
 
 
-timeline.push(makeGumballPages(self_response_configs));
-timeline.push(makePredictionTrials(speaker_self));
 
 
 if (condition == 1 || condition == 2 || condition == 3) {
@@ -1471,14 +1469,12 @@ if (condition === 3) {
   timeline.push(makePredictionTrials(speaker_same));
 }
 
-timeline.push(makeGumballPages(self_response_configs));
-timeline.push(makePredictionTrials(speaker_self));
 
 timeline.push(saving_screen);
 timeline.push(save_data);
 
 // Uncomment for Prolific
-// timeline.push(prolific_completion_page);
+//timeline.push(prolific_completion_page);
 
 // Uncomment for RPP
  timeline.push(credit_instructions);
