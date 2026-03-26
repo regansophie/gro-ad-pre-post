@@ -740,7 +740,7 @@ function getPredictionCopy(gender) {
 }
 
 
-/ ==================================================
+// ==================================================
 // FACTORY: prediction trials + catch question
 // (Updated to support self-prediction when gender === "self")
 // ==================================================
