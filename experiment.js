@@ -306,7 +306,7 @@ var gumball_configs_intro_2 = [
 
 
 // speakerNumber: 1, 2, 3...
-// threshold: proportion of BLUE at/above which we use "probably" instead of "might"
+// threshold: proportion of BLUE at/above which we use "many" instead of "some"
 function makeSpeakerGumballConfigs(speakerNumber, gender, threshold, specialAlien) {
   const baseRatios = [
     { numRed: 30, numBlue: 0,  specialAlien: specialAlien }, // 1.00
@@ -421,8 +421,7 @@ function makeConditionConfigs(condition, speakerNumber, target="blue", speakerTh
     if (condition === "cautious")  return (proportion >= speakerThreshold) ? "MIGHT" : "PROBABLY";
   }
 
-// 5 at 60%
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 10; i++) {
     trials.push(makeTrialConfig({
       proportion: speakerThreshold,
       utteranceType: criticalUtterance(speakerThreshold),
@@ -444,24 +443,10 @@ function makeConditionConfigs(condition, speakerNumber, target="blue", speakerTh
     }));
   }
 
-
   if (condition === "confident") {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 7; i++) {
       trials.push(makeTrialConfig({
         proportion: 0.25,
-        utteranceType: "PROBABLY",
-        speakerNumber,
-        target,
-        pronounPhrase,
-        specialAlien
-      }));
-    }
-  }
-
-  if (condition === "confident") {
-    for (let i = 0; i < 5; i++) {
-      trials.push(makeTrialConfig({
-        proportion: 0.1,
         utteranceType: "MIGHT",
         speakerNumber,
         target,
@@ -472,22 +457,9 @@ function makeConditionConfigs(condition, speakerNumber, target="blue", speakerTh
   }
 
   if (condition === "cautious") {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 7; i++) {
       trials.push(makeTrialConfig({
-        proportion: 0.9,
-        utteranceType: "MIGHT",
-        speakerNumber,
-        target,
-        pronounPhrase,
-        specialAlien
-      }));
-    }
-  }
-
-  if (condition === "cautious") {
-    for (let i = 0; i < 5; i++) {
-      trials.push(makeTrialConfig({
-        proportion: 0.96,
+        proportion: 0.90,
         utteranceType: "PROBABLY",
         speakerNumber,
         target,
@@ -757,10 +729,9 @@ function getPredictionCopy(gender) {
       otherLabel: `You would say <b>something else.</b>`
     };
   }
-  const pronoun = gender === "female" ? "she" : "he";
 
   return {
-    question: `What will ${pronoun} say about the likelihood of getting a blue gumball?`,
+    question: "What do you think this alien will say about the likelihood of getting a blue gumballs?",
     likelihoodPrompt: "How likely do you think it is that the alien will say each of the following sentences?",
     mightLabel: `The alien will say, <b>“We might get a blue one.”</b>`,
     probablyLabel: `The alien will say, <b>“We will probably get a blue one.”</b>`,
@@ -950,51 +921,37 @@ function makePredictionTrials(configList) {
 
                 <div style="display:flex; flex-direction:column; gap:6px;">
 
-                <div style="display:flex; align-items:center; gap:4px;">
-                  <div style="flex:1; font-size:12px;">
-                    ${copy.mightLabel}
+                  <div style="display:flex; align-items:center; gap:4px;">
+                    <div style="flex:1; font-size:12px;">
+                      ${copy.mightLabel}
+                    </div>
+                    <input id="slider_might" type="range" min="0" max="100" value="0" style="flex:2;">
+                    <div style="width:40px; text-align:right;">
+                      <span id="value_might">0</span>
+                    </div>
                   </div>
-                  <input id="slider_might" type="range" min="0" max="100" value="0" step="1" style="flex:2;">
-                  <div style="width:40px; text-align:right;">
-                    <span id="value_might">0</span>
+
+                  <div style="display:flex; align-items:center; gap:4px;">
+                    <div style="flex:1; font-size:12px;">
+                      ${copy.probablyLabel}
+                    </div>
+                    <input id="slider_probably" type="range" min="0" max="100" value="0" style="flex:2;">
+                    <div style="width:40px; text-align:right;">
+                      <span id="value_probably">0</span>
+                    </div>
                   </div>
+
+                  <div style="display:flex; align-items:center; gap:4px;">
+                    <div style="flex:1; font-size:12px;">
+                      ${copy.otherLabel}
+                    </div>
+                    <input id="slider_other" type="range" min="0" max="100" value="0" style="flex:2;">
+                    <div style="width:40px; text-align:right;">
+                      <span id="value_other">0</span>
+                    </div>
+                  </div>
+
                 </div>
-
-                <div style="display:flex; align-items:center; gap:4px;">
-                  <div style="flex:1; font-size:12px;">
-                    ${copy.probablyLabel}
-                  </div>
-                  <input id="slider_probably" type="range" min="0" max="100" value="0" step="1" style="flex:2;">
-                  <div style="width:40px; text-align:right;">
-                    <span id="value_probably">0</span>
-                  </div>
-                </div>
-
-                <div style="display:flex; align-items:center; gap:4px;">
-                  <div style="flex:1; font-size:12px;">
-                    ${copy.otherLabel}
-                  </div>
-                  <input id="slider_other" type="range" min="0" max="100" value="0" step="1" style="flex:2;">
-                  <div style="width:40px; text-align:right;">
-                    <span id="value_other">0</span>
-                  </div>
-                </div>
-
-                <input 
-                  id="other_text"
-                  type="text"
-                  placeholder="If something else, what would it be?"
-                  style="
-                    width:100%;
-                    font-size:14px;
-                    padding:6px;
-                    border-radius:6px;
-                    border:1px solid #ccc;
-                    box-sizing:border-box;
-                  "
-                >
-
-              </div>
 
                 <div style="margin-top:6px; text-align:center; font-size:14px;">
                   Total: <span id="total_value">0</span> / 100
@@ -1090,16 +1047,12 @@ function makePredictionTrials(configList) {
             const other    = parseInt(sOther.value, 10)    || 0;
             const total    = might + probably + other;
             if (total !== 100) return;
-            
-            const otherText = document.getElementById("other_text").value.trim();
-
 
             jsPsych.finishTrial({
               pred_might:    might,
               pred_probably: probably,
               pred_other:    other,
-              pred_total:    total,
-              pred_other_text: otherText
+              pred_total:    total
             });
           };
 
@@ -1127,7 +1080,7 @@ function makePredictionTrials(configList) {
 var save_data = {
   type: jsPsychPipe,
   action: "save",
-  experiment_id: "uoBJ02O1c8EB",
+  experiment_id: "srGu9BU1Qb8Q",
   filename: function() {
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     return `sub-${timestamp}_gumballs_${subject_id}.csv`;
@@ -1165,7 +1118,7 @@ var credit_instructions = {
       <p>Thank you for participating!</p>
       <p>To receive credit, please click the link below and enter your name.</p>
       <p style="margin-top:20px;">
-        <a href="https://forms.gle/Rg4TXhBrQSdzXBzg8"
+        <a href="https://forms.gle/3Vk7e4CqKtZkYok49"
            target="_blank"
            style="color:#ffd166; font-size:26px; text-decoration:underline;">
            → Click here to submit your name for RPP credit ←
@@ -1227,6 +1180,10 @@ var opening_instructions_prolific = {
       padding-top: 10%;
       text-align: center;
     ">
+      <p>
+        This study will probably take you less than ten minutes.
+        Please do not rush. Your answers are very important research data.
+      </p>
       <p style="margin-top: 20px;">
         After this page, you will see a consent form. Once you give consent, the experiment will begin.
       </p>
@@ -1295,7 +1252,7 @@ var prolific_completion_page = {
       <p>Thank you for participating!</p>
       <p style="margin-top: 20px;">Your Prolific completion code is:</p>
       <p style="margin-top: 10px; font-size: 32px; font-weight: bold;">
-        <code>C12K86L9</code>
+        <code>C4LMH6MP</code>
       </p>
       <p style="margin-top: 30px;">
         You can now return to Prolific and enter this code.<br>
@@ -1373,7 +1330,7 @@ const preload_images = {
 // ==================================================
 // Assign to one condition
 // ==================================================
-var condition = jsPsych.randomization.sampleWithoutReplacement([1, 2, 3], 1)[0];
+var condition = jsPsych.randomization.sampleWithoutReplacement([1,2,3], 1)[0];
 jsPsych.data.addProperties({ prediction_condition: condition });
 
 var speaker_con = jsPsych.randomization.sampleWithoutReplacement([0,1], 1)[0];
@@ -1428,12 +1385,12 @@ console.log(speaker_con);
 timeline.push(preload_images);
 
 // Uncomment for RPP
-timeline.push(opening_instructions);
+// timeline.push(opening_instructions);
 
 
 // Uncomment for Prolific
-// timeline.push(prolific_id_page);
-// timeline.push(opening_instructions_prolific);
+ timeline.push(prolific_id_page);
+ timeline.push(opening_instructions_prolific);
 
 
 timeline.push(consent_block);
@@ -1441,6 +1398,8 @@ timeline.push(consent_block);
 timeline.push(makeGumballPages(gumball_configs_intro));
 
 
+timeline.push(makeGumballPages(self_response_configs));
+timeline.push(makePredictionTrials(speaker_self));
 
 
 if (condition == 1 || condition == 2 || condition == 3) {
@@ -1470,15 +1429,17 @@ if (condition === 3) {
   timeline.push(makePredictionTrials(speaker_same));
 }
 
+timeline.push(makeGumballPages(self_response_configs));
+timeline.push(makePredictionTrials(speaker_self));
 
 timeline.push(saving_screen);
 timeline.push(save_data);
 
 // Uncomment for Prolific
-//timeline.push(prolific_completion_page);
+timeline.push(prolific_completion_page);
 
 // Uncomment for RPP
- timeline.push(credit_instructions);
+// timeline.push(credit_instructions);
 
 
 // ==================================================
