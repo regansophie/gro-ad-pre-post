@@ -444,7 +444,7 @@ function makeConditionConfigs(condition, speakerNumber, target="blue", speakerTh
   }
 
   if (condition === "confident") {
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 10; i++) {
       trials.push(makeTrialConfig({
         proportion: 0.25,
         utteranceType: "MIGHT",
@@ -457,7 +457,7 @@ function makeConditionConfigs(condition, speakerNumber, target="blue", speakerTh
   }
 
   if (condition === "cautious") {
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 10; i++) {
       trials.push(makeTrialConfig({
         proportion: 0.90,
         utteranceType: "PROBABLY",
@@ -731,7 +731,7 @@ function getPredictionCopy(gender) {
   }
 
   return {
-    question: "What do you think this alien will say about the likelihood of getting a blue gumballs?",
+    question: "What do you think this alien will say about the likelihood of getting a blue gumball?",
     likelihoodPrompt: "How likely do you think it is that the alien will say each of the following sentences?",
     mightLabel: `The alien will say, <b>“We might get a blue one.”</b>`,
     probablyLabel: `The alien will say, <b>“We will probably get a blue one.”</b>`,
@@ -740,7 +740,7 @@ function getPredictionCopy(gender) {
 }
 
 
-// ==================================================
+/ ==================================================
 // FACTORY: prediction trials + catch question
 // (Updated to support self-prediction when gender === "self")
 // ==================================================
@@ -921,37 +921,51 @@ function makePredictionTrials(configList) {
 
                 <div style="display:flex; flex-direction:column; gap:6px;">
 
-                  <div style="display:flex; align-items:center; gap:4px;">
-                    <div style="flex:1; font-size:12px;">
-                      ${copy.mightLabel}
-                    </div>
-                    <input id="slider_might" type="range" min="0" max="100" value="0" style="flex:2;">
-                    <div style="width:40px; text-align:right;">
-                      <span id="value_might">0</span>
-                    </div>
+                <div style="display:flex; align-items:center; gap:4px;">
+                  <div style="flex:1; font-size:12px;">
+                    ${copy.mightLabel}
                   </div>
-
-                  <div style="display:flex; align-items:center; gap:4px;">
-                    <div style="flex:1; font-size:12px;">
-                      ${copy.probablyLabel}
-                    </div>
-                    <input id="slider_probably" type="range" min="0" max="100" value="0" style="flex:2;">
-                    <div style="width:40px; text-align:right;">
-                      <span id="value_probably">0</span>
-                    </div>
+                  <input id="slider_might" type="range" min="0" max="100" value="0" step="1" style="flex:2;">
+                  <div style="width:40px; text-align:right;">
+                    <span id="value_might">0</span>
                   </div>
-
-                  <div style="display:flex; align-items:center; gap:4px;">
-                    <div style="flex:1; font-size:12px;">
-                      ${copy.otherLabel}
-                    </div>
-                    <input id="slider_other" type="range" min="0" max="100" value="0" style="flex:2;">
-                    <div style="width:40px; text-align:right;">
-                      <span id="value_other">0</span>
-                    </div>
-                  </div>
-
                 </div>
+
+                <div style="display:flex; align-items:center; gap:4px;">
+                  <div style="flex:1; font-size:12px;">
+                    ${copy.probablyLabel}
+                  </div>
+                  <input id="slider_probably" type="range" min="0" max="100" value="0" step="1" style="flex:2;">
+                  <div style="width:40px; text-align:right;">
+                    <span id="value_probably">0</span>
+                  </div>
+                </div>
+
+                <div style="display:flex; align-items:center; gap:4px;">
+                  <div style="flex:1; font-size:12px;">
+                    ${copy.otherLabel}
+                  </div>
+                  <input id="slider_other" type="range" min="0" max="100" value="0" step="1" style="flex:2;">
+                  <div style="width:40px; text-align:right;">
+                    <span id="value_other">0</span>
+                  </div>
+                </div>
+
+                <input 
+                  id="other_text"
+                  type="text"
+                  placeholder="If something else, what would it be?"
+                  style="
+                    width:100%;
+                    font-size:14px;
+                    padding:6px;
+                    border-radius:6px;
+                    border:1px solid #ccc;
+                    box-sizing:border-box;
+                  "
+                >
+
+              </div>
 
                 <div style="margin-top:6px; text-align:center; font-size:14px;">
                   Total: <span id="total_value">0</span> / 100
@@ -1047,12 +1061,16 @@ function makePredictionTrials(configList) {
             const other    = parseInt(sOther.value, 10)    || 0;
             const total    = might + probably + other;
             if (total !== 100) return;
+            
+            const otherText = document.getElementById("other_text").value.trim();
+
 
             jsPsych.finishTrial({
               pred_might:    might,
               pred_probably: probably,
               pred_other:    other,
-              pred_total:    total
+              pred_total:    total,
+              pred_other_text: otherText
             });
           };
 
@@ -1073,14 +1091,13 @@ function makePredictionTrials(configList) {
 }
 
 
-
 // ==================================================
 // Save data / end screens 
 // ==================================================
 var save_data = {
   type: jsPsychPipe,
   action: "save",
-  experiment_id: "srGu9BU1Qb8Q",
+  experiment_id: "6yisKMG8vvXp",
   filename: function() {
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     return `sub-${timestamp}_gumballs_${subject_id}.csv`;
