@@ -306,7 +306,7 @@ var gumball_configs_intro_2 = [
 
 
 // speakerNumber: 1, 2, 3...
-// threshold: proportion of BLUE at/above which we use "many" instead of "some"
+// threshold: proportion of BLUE at/above which we use "probably" instead of "might"
 function makeSpeakerGumballConfigs(speakerNumber, gender, threshold, specialAlien) {
   const baseRatios = [
     { numRed: 30, numBlue: 0,  specialAlien: specialAlien }, // 1.00
@@ -421,7 +421,8 @@ function makeConditionConfigs(condition, speakerNumber, target="blue", speakerTh
     if (condition === "cautious")  return (proportion >= speakerThreshold) ? "MIGHT" : "PROBABLY";
   }
 
-  for (let i = 0; i < 10; i++) {
+// 5 at 60%
+  for (let i = 0; i < 5; i++) {
     trials.push(makeTrialConfig({
       proportion: speakerThreshold,
       utteranceType: criticalUtterance(speakerThreshold),
@@ -443,10 +444,37 @@ function makeConditionConfigs(condition, speakerNumber, target="blue", speakerTh
     }));
   }
 
+
+  if (condition === "confident") {
+    for (let i = 0; i < 5; i++) {
+      trials.push(makeTrialConfig({
+        proportion: 0.25,
+        utteranceType: "PROBABLY",
+        speakerNumber,
+        target,
+        pronounPhrase,
+        specialAlien
+      }));
+    }
+  }
+
   if (condition === "confident") {
     for (let i = 0; i < 10; i++) {
       trials.push(makeTrialConfig({
-        proportion: 0.25,
+        proportion: 0.1,
+        utteranceType: "MIGHT",
+        speakerNumber,
+        target,
+        pronounPhrase,
+        specialAlien
+      }));
+    }
+  }
+
+  if (condition === "cautious") {
+    for (let i = 0; i < 5; i++) {
+      trials.push(makeTrialConfig({
+        proportion: 0.9,
         utteranceType: "MIGHT",
         speakerNumber,
         target,
@@ -459,7 +487,7 @@ function makeConditionConfigs(condition, speakerNumber, target="blue", speakerTh
   if (condition === "cautious") {
     for (let i = 0; i < 10; i++) {
       trials.push(makeTrialConfig({
-        proportion: 0.90,
+        proportion: 0.96,
         utteranceType: "PROBABLY",
         speakerNumber,
         target,
@@ -731,7 +759,7 @@ function getPredictionCopy(gender) {
   }
 
   return {
-    question: "What do you think this alien will say about the likelihood of getting a blue gumball?",
+    question: "What will this alien will say about the likelihood of getting a blue gumball?",
     likelihoodPrompt: "How likely do you think it is that the alien will say each of the following sentences?",
     mightLabel: `The alien will say, <b>“We might get a blue one.”</b>`,
     probablyLabel: `The alien will say, <b>“We will probably get a blue one.”</b>`,
@@ -1091,13 +1119,14 @@ function makePredictionTrials(configList) {
 }
 
 
+
 // ==================================================
 // Save data / end screens 
 // ==================================================
 var save_data = {
   type: jsPsychPipe,
   action: "save",
-  experiment_id: "6yisKMG8vvXp",
+  experiment_id: "BkMlLgROQBV8",
   filename: function() {
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     return `sub-${timestamp}_gumballs_${subject_id}.csv`;
@@ -1197,10 +1226,6 @@ var opening_instructions_prolific = {
       padding-top: 10%;
       text-align: center;
     ">
-      <p>
-        This study will probably take you less than ten minutes.
-        Please do not rush. Your answers are very important research data.
-      </p>
       <p style="margin-top: 20px;">
         After this page, you will see a consent form. Once you give consent, the experiment will begin.
       </p>
@@ -1347,7 +1372,7 @@ const preload_images = {
 // ==================================================
 // Assign to one condition
 // ==================================================
-var condition = jsPsych.randomization.sampleWithoutReplacement([1,2,3], 1)[0];
+var condition = jsPsych.randomization.sampleWithoutReplacement([1, 2, 3], 1)[0];
 jsPsych.data.addProperties({ prediction_condition: condition });
 
 var speaker_con = jsPsych.randomization.sampleWithoutReplacement([0,1], 1)[0];
